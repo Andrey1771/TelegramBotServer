@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using Lab_9;
 
 namespace Lab_10
 {
@@ -21,8 +22,12 @@ namespace Lab_10
     /// </summary>
     public partial class MainWindow : Window
     {
+        BillyTelegramBot bot;
+        
+
         public MainWindow()
         {
+            
             InitializeComponent();
         }
 
@@ -51,6 +56,11 @@ namespace Lab_10
         private void mailingButton_Click(object sender, RoutedEventArgs e)
         {
             
+        }
+
+        private void onOffBotButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

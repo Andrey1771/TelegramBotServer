@@ -18,7 +18,7 @@ using Google.Apis.Drive.v2.Data;
 
 namespace Lab_9
 {
-    class BillyTelegramBot
+    public class BillyTelegramBot
     {
         TelegramBotClient bot;
         string telegramToken, googleToken;
@@ -255,7 +255,7 @@ namespace Lab_9
                         string pattern = "/loadgachi [A-Za-z0-9А-Яа-я ,\\.&\\$#№@':;\\{\\}\\[\\]\\(\\)\\*\\^\\%\\ _ \\-\\=]+";
                         regex = new Regex(pattern);
                         var srewr = regex.Match(message.Text).Value;
-                        var strArr = regex.Match(message.Text).Value.Split(" ");
+                        var strArr = regex.Match(message.Text).Value.Split(' ');
                         if (strArr.Length > 1)
                         {
                             string fileName = "";
@@ -278,7 +278,7 @@ namespace Lab_9
                                 fileName += str;
                             }
 
-                            using (FileStream fStream = new FileStream(@$"E:\Visual Projects\Skillbox\Lab_9\BillyContent\{fileName}", FileMode.Open))
+                            using (FileStream fStream = new FileStream($@"E:\Visual Projects\Skillbox\Lab_9\BillyContent\{fileName}", FileMode.Open))
                             {
                                 await bot.SendDocumentAsync(message.Chat, new InputOnlineFile(fStream, fileName), "BillyMailCorparation");
                             }

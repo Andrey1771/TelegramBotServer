@@ -33,6 +33,14 @@
                     <Button x:Name="pathSaveLoadButton"  MinWidth="40" Height="20" Margin="10,10,10,10" Click="pathSaveLoadButton_Click">...</Button>
                 </StackPanel>
             </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <TextBlock FontWeight="Medium" TextWrapping="Wrap" Text="On/off сервер бота"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="onOffBotButton" MinWidth="55" Height="20" Margin="10,10,10,10" Click="onOffBotButton_Click">On</Button>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
         <Grid ShowGridLines="True" Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
