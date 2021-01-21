@@ -6,7 +6,67 @@
         xmlns:local="clr-namespace:Lab_10"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height ="*"></RowDefinition>
+            <RowDefinition Height ="5*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal"  Grid.Row="0">
+            <GroupBox>
+                <GroupBox.Header>
+                    <TextBlock FontWeight="Medium" Text="Выбор пути для токена бота"></TextBlock>
+                </GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:Name="pathTokenTelegramTextBox" Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Right" Text="gregre" MinWidth="200"></TextBox>
+                    <Button x:Name="pathTokenTelegramButton"  MinWidth="40" Height="20" Margin="10,10,10,10" Click="pathTokenTelegramButton_Click">...</Button>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox>
+                <GroupBox.Header>
+                    <TextBlock FontWeight="Medium" Text="Выбор пути для хранения фалов"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:Name="pathSaveLoadTextBox"  Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Right" Text="gregre" MinWidth="200"/>
+                    <Button x:Name="pathSaveLoadButton"  MinWidth="40" Height="20" Margin="10,10,10,10" Click="pathSaveLoadButton_Click">...</Button>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+        <Grid ShowGridLines="True" Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height ="3*"></RowDefinition>
+                <RowDefinition Height ="auto"></RowDefinition>
+                <RowDefinition Height ="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <GridSplitter Grid.Row="1" Grid.Column="0" Height="3" VerticalAlignment="Center" HorizontalAlignment="Stretch"></GridSplitter>
+            <TextBlock Grid.Row="2" x:Name="loggerTextBlock"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="Logger" TextAlignment="Left"/>
+            <Grid Grid.Row="0" ShowGridLines="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <DataGrid x:Name="usersDataGrid" Grid.Column="0"></DataGrid>
+                <StackPanel Grid.Column="1" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="settings1CheckBox" Margin="2,2,2,2"></CheckBox>
+                        <TextBlock x:Name="settings1TextBlock" Margin="2,2,2,2">Прием данных</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="settings2CheckBox" Margin="2,2,2,2"></CheckBox>
+                        <TextBlock x:Name="settings2TextBlock" Margin="2,2,2,2">Отправка данных</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="settings3CheckBox" Margin="2,2,2,2"></CheckBox>
+                        <TextBlock x:Name="settings3TextBlock" TextWrapping="Wrap" Width="140" Margin="2,2,2,2">Регистрация новых пользователей</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="mailingButton" Margin="2,2,2,2" Click="mailingButton_Click">Рассылка</Button>
+                        <TextBlock x:Name="mailingTextBlock" Margin="2,2,2,2">Начать рассылку</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace Lab_10
 {
@@ -23,6 +24,33 @@ namespace Lab_10
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void pathTokenTelegramButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            
+
+            if(openFileDialog.ShowDialog(this) == true)
+            {
+                pathTokenTelegramTextBox.Text = openFileDialog.FileName;
+            }
+        }
+
+        private void pathSaveLoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+
+            if (openFileDialog.ShowDialog(this) == true)
+            {
+                pathSaveLoadTextBox.Text = openFileDialog.FileName;
+            }
+        }
+
+        private void mailingButton_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }
