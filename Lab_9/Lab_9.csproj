@@ -69,8 +69,10 @@
   <ItemGroup>
     <Compile Include="BillyTelegramBot.cs" />
     <Compile Include="IBillyTelegramBot.cs" />
+    <Compile Include="JSONController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XMLController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

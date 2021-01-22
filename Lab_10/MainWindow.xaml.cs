@@ -60,7 +60,7 @@ namespace Lab_10
 
         private void onOffBotButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //bot.
         }
     }
 }
