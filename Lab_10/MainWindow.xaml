@@ -26,7 +26,7 @@
                     <TextBlock FontWeight="Medium" Text="Выбор пути для токена бота"></TextBlock>
                 </GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="pathTokenTelegramTextBox" Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="gregre" MinWidth="150"></TextBox>
+                    <TextBox x:Name="pathTokenTelegramTextBox" Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="C:\Users\Andrey\Desktop\BillyToken.txt" MinWidth="150"></TextBox>
                     <Button x:Name="pathTokenTelegramButton"  MinWidth="40" Height="20" Margin="10,10,10,10" Click="pathTokenTelegramButton_Click">...</Button>
                 </StackPanel>
             </GroupBox>
@@ -35,7 +35,7 @@
                     <TextBlock FontWeight="Medium" Text="Выбор пути для хранения фалов"/>
                 </GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="pathSaveLoadTextBox"  Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Right" Text="gregre" MinWidth="150"/>
+                    <TextBox x:Name="pathSaveLoadTextBox"  Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Right" Text="E:\Visual Projects\Skillbox\Lab_9\BillyContent" MinWidth="150"/>
                     <Button x:Name="pathSaveLoadButton"  MinWidth="40" Height="20" Margin="10,10,10,10" Click="pathSaveLoadButton_Click">...</Button>
                 </StackPanel>
             </GroupBox>
@@ -52,7 +52,7 @@
                     <TextBlock FontWeight="Medium" Height="auto"  TextWrapping="Wrap" Text="Выбор пути к системным данным"/>
                 </GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="pathSaverSystemextBox"  Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Right" Text="gregre" MinWidth="150"/>
+                    <TextBox x:Name="pathSaverSystemTextBox"  Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Right" Text="E:\Visual Projects\Skillbox\Lab_9\BillyContent" MinWidth="150"/>
                     <Button x:Name="pathSaverSystemButton"  MinWidth="40" Height="20" Margin="10,10,10,10" Click="pathSaverSystemButton_Click" Content="..."/>
                 </StackPanel>
             </GroupBox>

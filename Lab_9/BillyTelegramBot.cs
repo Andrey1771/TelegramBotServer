@@ -18,11 +18,11 @@ using System.Collections;
 
 namespace Lab_9
 {
-    public class BillyTelegramBot : IBillyTelegramBot<User>
+    public class BillyTelegramBot : IBillyTelegramBot
     {
         TelegramBotClient bot;
         public string PathToSettingsData { get; set; }
-        public string TelegramToken { get; set; }
+        public string TelegramToken { get; set; }// Можно добавить сигналы на переподключение, но пока смысл такого функционала не вижу
         public string GoogleToken { get; set; }
         public string PathToLoadFile { get; set; }
 
@@ -30,10 +30,13 @@ namespace Lab_9
         public Settings Settings { get { return settings; } set { settings = value; NewSettingsEvent(); } }
 
         HashSet<User> users;//Вообще, тут также подошел бы map в качестве ключа userName(UserId), а Data все остальное
-        ICollection<User> IBillyTelegramBot<User>.Users { get => users; }
+        public ICollection<User> Users { get => users; }
 
         Queue<string> logs;
         public ICollection Logs => logs;
+
+        bool enable = false;
+        public bool Enable => enable;
 
         delegate void SettingsHandler();
         event SettingsHandler NewSettingsEvent;
@@ -84,11 +87,15 @@ namespace Lab_9
         }
         ///TODO
 
-        public BillyTelegramBot(string apathToLoadFile, string pathToTelegramToken, string pathToGoogleToken, string apathToSettingsData)
+        public BillyTelegramBot(string apathToLoadFile, string pathToTelegramToken, string apathToSettingsData, string pathToGoogleToken = "")
         {
             PathToLoadFile = apathToLoadFile;
             TelegramToken = System.IO.File.ReadAllText(pathToTelegramToken);
-            GoogleToken = System.IO.File.ReadAllText(pathToGoogleToken);
+            if (pathToGoogleToken != "")
+                GoogleToken = System.IO.File.ReadAllText(pathToGoogleToken);
+            else
+                GoogleToken = "Nothing";
+
             PathToSettingsData = apathToSettingsData;
 
             #region exc
@@ -128,17 +135,17 @@ namespace Lab_9
 
         private HashSet<User> LoadUserFile(string path)
         {
-            return JSONController<HashSet<User>>.Deserialize($"{path}/usersData");
+            return JSONController<HashSet<User>>.Deserialize($"{path}/usersData.json");
         }
 
         private void SaveUserFile(HashSet<User> collection, string path)
         {
-            JSONController<HashSet<User>>.Serialize(collection, $"{path}/usersData");
+            JSONController<HashSet<User>>.Serialize(collection, $"{path}/usersData.json");
         }
 
         private void SaveLogs(Queue<string> collection, string path)
         {
-            JSONController<Queue<string>>.Serialize(collection, $"{path}/logsData");
+            JSONController<Queue<string>>.Serialize(collection, $"{path}/logsData.json");
         }
 
 
@@ -333,7 +340,7 @@ namespace Lab_9
                             fileName += str;
                         }
 
-                        using (FileStream fStream = new FileStream($@"E:\Visual Projects\Skillbox\Lab_9\BillyContent\{fileName}", FileMode.Open))
+                        using (FileStream fStream = new FileStream($@"{PathToLoadFile}\{fileName}", FileMode.Open))
                         {
                             await bot.SendDocumentAsync(message.Chat, new InputOnlineFile(fStream, fileName), "BillyMailCorparation");
                         }
@@ -490,6 +497,7 @@ namespace Lab_9
                 UpdateSettings();
 
                 bot.StartReceiving();
+                enable = true;
             }
             catch (Telegram.Bot.Exceptions.ApiRequestException ex)
             {
@@ -500,6 +508,7 @@ namespace Lab_9
         public void StopBot()
         {
             bot.StopReceiving();
+            enable = false;
         }
 
 

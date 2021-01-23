@@ -48,15 +48,17 @@ namespace Lab_9
         }
     }
 
-    interface IBillyTelegramBot<T>
+    public interface IBillyTelegramBot
     {
+        bool Enable { get; }
         Settings Settings { get; set; }
-        ICollection<T> Users { get; }
+        ICollection<User> Users { get; }
         ICollection Logs { get; }
 
         void StartBot();
 
         void StopBot();
 
+        void SendAllMessage(string message);
     }
 }
