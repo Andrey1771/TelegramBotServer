@@ -61,6 +61,18 @@ namespace Lab_10
         private void onOffBotButton_Click(object sender, RoutedEventArgs e)
         {
             //bot.
+            //bot.
+        }
+
+        private void pathSaverSystemButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+
+            if (openFileDialog.ShowDialog(this) == true)
+            {
+                pathSaverSystemextBox.Text = openFileDialog.FileName;
+            }
         }
     }
 }

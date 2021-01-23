@@ -5,43 +5,58 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab_10"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="900" MinWidth="900" MinHeight="450">
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height ="*"></RowDefinition>
             <RowDefinition Height ="5*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Horizontal"  Grid.Row="0">
-            <GroupBox>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width ="2*"></ColumnDefinition>
+                <ColumnDefinition Width ="2*"></ColumnDefinition>
+                <ColumnDefinition Width ="*"></ColumnDefinition>
+                <ColumnDefinition Width ="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0">
                 <GroupBox.Header>
                     <TextBlock FontWeight="Medium" Text="Выбор пути для токена бота"></TextBlock>
                 </GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="pathTokenTelegramTextBox" Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Right" Text="gregre" MinWidth="200"></TextBox>
+                    <TextBox x:Name="pathTokenTelegramTextBox" Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="gregre" MinWidth="150"></TextBox>
                     <Button x:Name="pathTokenTelegramButton"  MinWidth="40" Height="20" Margin="10,10,10,10" Click="pathTokenTelegramButton_Click">...</Button>
                 </StackPanel>
             </GroupBox>
-            <GroupBox>
+            <GroupBox Grid.Column="1">
                 <GroupBox.Header>
                     <TextBlock FontWeight="Medium" Text="Выбор пути для хранения фалов"/>
                 </GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="pathSaveLoadTextBox"  Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Right" Text="gregre" MinWidth="200"/>
+                    <TextBox x:Name="pathSaveLoadTextBox"  Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Right" Text="gregre" MinWidth="150"/>
                     <Button x:Name="pathSaveLoadButton"  MinWidth="40" Height="20" Margin="10,10,10,10" Click="pathSaveLoadButton_Click">...</Button>
                 </StackPanel>
             </GroupBox>
-            <GroupBox>
+            <GroupBox Grid.Column="2" Width="auto">
                 <GroupBox.Header>
-                    <TextBlock FontWeight="Medium" TextWrapping="Wrap" Text="On/off сервер бота"/>
+                    <TextBlock FontWeight="Medium" TextWrapping="Wrap" Text="On/Off сервер бота"/>
                 </GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="onOffBotButton" MinWidth="55" Height="20" Margin="10,10,10,10" Click="onOffBotButton_Click">On</Button>
                 </StackPanel>
             </GroupBox>
-        </StackPanel>
+            <GroupBox Grid.Column="3">
+                <GroupBox.Header>
+                    <TextBlock FontWeight="Medium" Height="auto"  TextWrapping="Wrap" Text="Выбор пути к системным данным"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:Name="pathSaverSystemextBox"  Margin="10,10,10,10" VerticalAlignment="Center" HorizontalAlignment="Right" Text="gregre" MinWidth="150"/>
+                    <Button x:Name="pathSaverSystemButton"  MinWidth="40" Height="20" Margin="10,10,10,10" Click="pathSaverSystemButton_Click" Content="..."/>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
         <Grid ShowGridLines="True" Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height ="3*"></RowDefinition>

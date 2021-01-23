@@ -14,13 +14,14 @@ using Telegram.Bot.Types.InputFiles;
 using Google.Apis.Drive.v2;
 using Google.Apis.Drive.v2.Data;
 using System.Data;
+using System.Collections;
 
 namespace Lab_9
 {
     public class BillyTelegramBot : IBillyTelegramBot<User>
     {
         TelegramBotClient bot;
-        public string PathToUsersData { get; set; }
+        public string PathToSettingsData { get; set; }
         public string TelegramToken { get; set; }
         public string GoogleToken { get; set; }
         public string PathToLoadFile { get; set; }
@@ -28,11 +29,16 @@ namespace Lab_9
         Settings settings = new Settings();
         public Settings Settings { get { return settings; } set { settings = value; NewSettingsEvent(); } }
 
-        HashSet<User> users;//Вообще, тут лучше подошел бы map в качестве ключа userName, а Data все остальное
+        HashSet<User> users;//Вообще, тут также подошел бы map в качестве ключа userName(UserId), а Data все остальное
         ICollection<User> IBillyTelegramBot<User>.Users { get => users; }
+
+        Queue<string> logs;
+        public ICollection Logs => logs;
 
         delegate void SettingsHandler();
         event SettingsHandler NewSettingsEvent;
+
+
 
 
         ///TODO
@@ -78,12 +84,12 @@ namespace Lab_9
         }
         ///TODO
 
-        public BillyTelegramBot(string apathToLoadFile, string pathToTelegramToken, string pathToGoogleToken, string apathToUsersData)
+        public BillyTelegramBot(string apathToLoadFile, string pathToTelegramToken, string pathToGoogleToken, string apathToSettingsData)
         {
             PathToLoadFile = apathToLoadFile;
             TelegramToken = System.IO.File.ReadAllText(pathToTelegramToken);
             GoogleToken = System.IO.File.ReadAllText(pathToGoogleToken);
-            PathToUsersData = apathToUsersData;
+            PathToSettingsData = apathToSettingsData;
 
             #region exc
 
@@ -110,27 +116,53 @@ namespace Lab_9
 
             NewSettingsEvent += UpdateSettings;
 
-            users = new HashSet<User>(LoadUserFile(PathToUsersData));
+            users = new HashSet<User>(LoadUserFile(PathToSettingsData));
+            logs = new Queue<string>();
         }
 
         ~BillyTelegramBot()
         {
-            SaveUserFile(users, PathToUsersData);
+            SaveUserFile(users, PathToSettingsData);
+            SaveLogs(logs, PathToSettingsData);
         }
 
         private HashSet<User> LoadUserFile(string path)
         {
-            return JSONController<HashSet<User>>.Deserialize(path);
+            return JSONController<HashSet<User>>.Deserialize($"{path}/usersData");
         }
 
         private void SaveUserFile(HashSet<User> collection, string path)
         {
-            JSONController<HashSet<User>>.Serialize(collection, path);
+            JSONController<HashSet<User>>.Serialize(collection, $"{path}/usersData");
         }
+
+        private void SaveLogs(Queue<string> collection, string path)
+        {
+            JSONController<Queue<string>>.Serialize(collection, $"{path}/logsData");
+        }
+
+
+
+        /// <summary>
+        /// Dangerous!!!
+        /// </summary>
+        /// <param name="message"></param>
+        public async void SendAllMessage(string message)
+        {
+            foreach(var user in users)
+            {
+                if(user.mailing == true)
+                {
+                    await bot.SendTextMessageAsync(user.userId, message);
+                }
+            }
+        }
+
 
         private async void OnInlineQuery(object si, Telegram.Bot.Args.InlineQueryEventArgs ei)
         {
             Console.WriteLine("StartOnInlineQuery");
+            logs.Enqueue($"InlineQuery/{ei.InlineQuery.From.Id}/{ei.InlineQuery.From.Username}/{ei.InlineQuery.From.FirstName}/{ei.InlineQuery.From.LastName}/{DateTime.Now}/{ei.InlineQuery.Query}/{ei.InlineQuery.Location}");
             var query = ei.InlineQuery.Query;
 
             var msg = new Telegram.Bot.Types.InlineQueryResults.InputTextMessageContent(@"My fellow brothers, I, Billy Herrington, stand here today, humbled by the task before us, mindful of the sacrifices born by our nico Nico ancestors. We are in the midst of crisis. Nico Nico Doga is at war against a far reaching storm of disturbance and of leash. Nico Nico's economy is badly weakened, a consequence of carelessness and irresponsibility of the part of management, but also on the collective failure to make hard choices and prepare for a new, mad age. Today, I say to you that the challenge is real, they are serious, and there are many. They will not be easily met or in a short span of time, but know that at Nico Nico, they will be met. In reaffirming the greatness of our site, we understand that greatness is never given, our journey has never been one of shortcuts. It has not been for the path, for the feint hearted, or seek only the fleshly pleasures. Rather, it has been the risk takers, the wasted genie, the creators of mad things. For us, they toiled in sweatshops, endured the lash of the spanking, time and time again. These men struggled and sacrificed so that we might LIVE BETTER. We remain the most powerful sight on the Internet and minds are no less inventive and services were no less needed, that they were last week, or yesterday, or the day before the day after tomorrow. Starting today, we must pull up our pants, dust ourselves off, and begin again the work of remaking Nico Nico Doga. Now, there are some who question the scale of our ambitions, who suggest that out service system cannot tolerate to many movies. There memories are short, for they have forgotten what Nico Nico already has done, what free men can achieve when imagination is joined to common purpose. And so, to all of the people that are watching this video, from the grandest cities to the small villages where Exile was born, know that Nico Nico is a friend of every man who seeks a future of love and peace. Now we will begin to leave authorized common materials to Nico Nico people and forge a hard, earned piece in this mad world. What is required of us now is a new era of responsibility. This is the price and the promise of Nico nicommon's citizenship. Nico Nico Doga in the face of are common dangers in this winter of our hardship, let us remember these timeless words: ASS WE CAN. Let it be said by our children's children that when we were tested by doss attacks, and refused by Youtube, we did not turn back, nor did we falter. And we were carried forth that the great gift of freedom be delivered and is safely to future generations. Thank You. God Bless. And God Bless Nico Nico Doga.﻿");//.InputMessageContents.InputTextMessageContent
@@ -175,6 +207,7 @@ namespace Lab_9
         private async void OnCallbackQueryAsync(object sc, Telegram.Bot.Args.CallbackQueryEventArgs ev)
         {
             Console.WriteLine("StartOnCallbackQuery");
+            logs.Enqueue($"CallbackQuery/{ev.CallbackQuery.From.Id}/{ev.CallbackQuery.From.Username}/{ev.CallbackQuery.From.FirstName}/{ev.CallbackQuery.From.LastName}/{DateTime.Now}/{ev.CallbackQuery.Data}/{ev.CallbackQuery.Message.Location}");
             var message = ev.CallbackQuery.Message;
             long id = message.Chat.Id + 1;
             switch (ev.CallbackQuery.Data)
@@ -211,6 +244,7 @@ namespace Lab_9
             var update = evu.Update;
             var message = update.Message;
             if (message == null) return;
+            logs.Enqueue($"Update/{evu.Update.Message.From.Id}/{evu.Update.Message.From.Username}/{evu.Update.Message.From.FirstName}/{evu.Update.Message.From.LastName}/{DateTime.Now}/{evu.Update.Message.Text}/{evu.Update.Message.Location}");
 
 
             bool have = false;
@@ -451,7 +485,7 @@ namespace Lab_9
         {
             try
             {
-                await bot.SetWebhookAsync(""); // Обязательно! убираем старую привязку к вебхуку для бота
+                await bot.SetWebhookAsync(""); // Убираем старую привязку к вебхуку для бота
 
                 UpdateSettings();
 

@@ -52,6 +52,7 @@ namespace Lab_9
     {
         Settings Settings { get; set; }
         ICollection<T> Users { get; }
+        ICollection Logs { get; }
 
         void StartBot();
 
