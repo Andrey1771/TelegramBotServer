@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab_10"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="900" MinWidth="900" MinHeight="450">
+        Title="MainWindow" Height="450" Width="1200" MinWidth="900" MinHeight="450">
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height ="*"></RowDefinition>
@@ -70,18 +70,25 @@
                     <ColumnDefinition Width="4*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <DataGrid x:Name="usersDataGrid" Grid.Column="0"></DataGrid>
+                <DataGrid x:Name="usersDataGrid" Grid.Column="0" AutoGenerateColumns="False" DataGrid.CanUserResizeColumns="False" IsReadOnly="True" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding UserId}" Header="UserId" Width="*"/>
+                        <DataGridTextColumn Binding="{Binding FirstName}" Header="FirstName" Width="*"/>
+                        <DataGridTextColumn Binding="{Binding LastName}" Header="LastName" Width="*"/>
+                        <DataGridTextColumn Binding="{Binding Mailing}" Header="Mailing" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
                 <StackPanel Grid.Column="1" Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="settings1CheckBox" Margin="2,2,2,2"></CheckBox>
+                        <CheckBox x:Name="settings1CheckBox" Margin="2,2,2,2" Click="settings1CheckBox_Click" IsChecked="True" ></CheckBox>
                         <TextBlock x:Name="settings1TextBlock" Margin="2,2,2,2">Прием данных</TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="settings2CheckBox" Margin="2,2,2,2"></CheckBox>
+                        <CheckBox x:Name="settings2CheckBox" Margin="2,2,2,2" Click="settings2CheckBox_Click" IsChecked="True"/>
                         <TextBlock x:Name="settings2TextBlock" Margin="2,2,2,2">Отправка данных</TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="settings3CheckBox" Margin="2,2,2,2"></CheckBox>
+                        <CheckBox x:Name="settings3CheckBox" Margin="2,2,2,2" Click="settings3CheckBox_Click" IsChecked="True"></CheckBox>
                         <TextBlock x:Name="settings3TextBlock" TextWrapping="Wrap" Width="140" Margin="2,2,2,2">Регистрация новых пользователей</TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">

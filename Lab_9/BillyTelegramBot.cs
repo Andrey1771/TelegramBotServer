@@ -26,22 +26,20 @@ namespace Lab_9
         public string GoogleToken { get; set; }
         public string PathToLoadFile { get; set; }
 
-        Settings settings = new Settings();
+        Settings settings = new Settings(true, true, true);
         public Settings Settings { get { return settings; } set { settings = value; NewSettingsEvent(); } }
 
         HashSet<User> users;//Вообще, тут также подошел бы map в качестве ключа userName(UserId), а Data все остальное
         public ICollection<User> Users { get => users; }
 
         Queue<string> logs;
-        public ICollection Logs => logs;
+        public ICollection Logs { get => logs; }
 
         bool enable = false;
         public bool Enable => enable;
 
         delegate void SettingsHandler();
         event SettingsHandler NewSettingsEvent;
-
-
 
 
         ///TODO
@@ -95,7 +93,7 @@ namespace Lab_9
                 GoogleToken = System.IO.File.ReadAllText(pathToGoogleToken);
             else
                 GoogleToken = "Nothing";
-
+            
             PathToSettingsData = apathToSettingsData;
 
             #region exc
@@ -125,6 +123,7 @@ namespace Lab_9
 
             users = new HashSet<User>(LoadUserFile(PathToSettingsData));
             logs = new Queue<string>();
+
         }
 
         ~BillyTelegramBot()
@@ -254,18 +253,20 @@ namespace Lab_9
             logs.Enqueue($"Update/{evu.Update.Message.From.Id}/{evu.Update.Message.From.Username}/{evu.Update.Message.From.FirstName}/{evu.Update.Message.From.LastName}/{DateTime.Now}/{evu.Update.Message.Text}/{evu.Update.Message.Location}");
 
 
-            bool have = false;
-            foreach(var user in users)// Почему не Contains? Тк он сравнивает все элементы, а мне нужен только userId, может что-то можно перегрузить, но я пока не нашел
-            {                       //Вообще, сменил бы СД на map
-                if(user.userId == message.From.Id)
-                {
-                    have = true;
-                    break;
+            if(!Settings.isRegistrationNewUsers && message.Chat.Type == ChatType.Private)
+            {
+                bool have = false;
+                foreach (var user in users)// Почему не Contains? Тк он сравнивает все элементы, а мне нужен только userId, может что-то можно перегрузить, но я пока не нашел
+                {                       //Вообще, сменил бы СД на map
+                    if (user.userId == message.From.Id)
+                    {
+                        have = true;
+                        break;
+                    }
                 }
+                if (have == false)
+                    users.Add(new User(message.From.Id, message.From.FirstName, message.From.LastName, false));
             }
-            if(have == false)
-                users.Add(new User(message.From.Id, message.From.FirstName, message.From.LastName, false));
-
 
             foreach(var user in users)
             {

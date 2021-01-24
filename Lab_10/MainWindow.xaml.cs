@@ -16,7 +16,6 @@ using Microsoft.Win32;
 using Lab_9;
 using System.IO;
 
-
 namespace Lab_10
 {
     /// <summary>
@@ -25,7 +24,6 @@ namespace Lab_10
     public partial class MainWindow : Window
     {
         BillyTelegramBot bot;
-        
 
         public MainWindow()
         {
@@ -34,7 +32,7 @@ namespace Lab_10
 
         private void UpdateDataGridBot(IBillyTelegramBot bot)
         {
-            usersDataGrid.DataContext = bot.Users;
+            usersDataGrid.ItemsSource = bot.Users;
         }
 
         private void pathTokenTelegramButton_Click(object sender, RoutedEventArgs e)
@@ -61,46 +59,75 @@ namespace Lab_10
 
         private void mailingButton_Click(object sender, RoutedEventArgs e)
         {
-            bot = new BillyTelegramBot(@"E:\Visual Projects\Skillbox\Lab_9\BillyContent",
-               @"C:\Users\Andrey\Desktop\BillyToken.txt", @"E:\Visual Projects\Skillbox\Lab_9\BillyContent", @"C:\Users\Andrey\Desktop\GoogleToken.txt");
-            bot.StartBot();
-            bot.SendAllMessage("GayChillMans with love, Aniki");
+            if(bot == null)
+            {
+                MessageBox.Show("Бот не включен", "Bot is off");
+                return;
+            }else if(bot.Enable == false)
+            {
+                MessageBox.Show("Бот не включен", "Bot is off");
+                return;
+            }
+
+            MailingWindow mailWindow = new MailingWindow();
+            mailWindow.ShowDialog();
+            if(mailWindow.Message != "")
+                bot.SendAllMessage(mailWindow.Message);
+        }
+
+
+        private bool CheckPathesBot()
+        {
+            if (!File.Exists(pathTokenTelegramTextBox.Text))
+            {
+                MessageBox.Show("pathTokenTelegramTextBox Неверный путь к файлу токена", "Неверный путь");
+                return false;
+            }
+            if (!Directory.Exists(pathSaveLoadTextBox.Text))
+            {
+                MessageBox.Show("pathSaveLoadTextBox Неверный путь папки сохранения и загрузки", "Неверный путь");
+                return false;
+            }
+            if (!Directory.Exists(pathSaverSystemTextBox.Text))
+            {
+                MessageBox.Show("pathSaverSystemTextBox Неверный путь папки системных данных", "Неверный путь");
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CreateBot()
+        {
+            if(CheckPathesBot())
+            {
+                bot = new BillyTelegramBot(pathSaveLoadTextBox.Text, pathTokenTelegramTextBox.Text, pathSaverSystemTextBox.Text);
+                UpdateDataGridBot(bot);
+                return true;
+            }
+            return false;
         }
 
         private void onOffBotButton_Click(object sender, RoutedEventArgs e)
         {
-            //bot.
-            //bot.
-            //pathTokenTelegramTextBox.Text
-            if (!File.Exists(pathTokenTelegramTextBox.Text))
+            if (bot == null)
             {
-                MessageBox.Show("pathTokenTelegramTextBox Неверный путь к файлу токена");
-                return;
-            }
-            if (!Directory.Exists(pathSaveLoadTextBox.Text))
-            {
-                MessageBox.Show("pathSaveLoadTextBox Неверный путь папки сохранения и загрузки");
-                return;
-            }
-            if (!Directory.Exists(pathSaverSystemTextBox.Text))
-            {
-                MessageBox.Show("pathSaverSystemTextBox Неверный путь папки системных данных");
-                return;
+                if (!CreateBot())
+                    return;
             }
 
-            if(bot == null)
-            {
-                bot = new BillyTelegramBot(pathSaveLoadTextBox.Text, pathTokenTelegramTextBox.Text, pathSaverSystemTextBox.Text);
-                UpdateDataGridBot(bot);
-            }
 
             if(!bot.Enable)
             {
                 bot.StartBot();
+                onOffBotButton.Background = Brushes.Green;
+                onOffBotButton.Content = "Off";
             }
             else
             {
                 bot.StopBot();
+                onOffBotButton.Background = Brushes.Red;
+                onOffBotButton.Content = "On";
             }
         }
 
@@ -113,6 +140,42 @@ namespace Lab_10
             {
                 pathSaverSystemTextBox.Text = openFileDialog.FileName;
             }
+        }
+
+        private void settings1CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if(bot == null)
+            {
+                settings1CheckBox.IsChecked = !settings1CheckBox.IsChecked;
+                return;
+            }
+            Settings newSettings = new Settings(bot.Settings);
+            newSettings.isLoadData = !newSettings.isLoadData;
+            bot.Settings = newSettings;
+        }
+
+        private void settings2CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (bot == null)
+            {
+                settings2CheckBox.IsChecked = !settings2CheckBox.IsChecked;
+                return;
+            }
+            Settings newSettings = new Settings(bot.Settings);
+            newSettings.isSendData = !newSettings.isSendData;
+            bot.Settings = newSettings;
+        }
+
+        private void settings3CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (bot == null)
+            {
+                settings1CheckBox.IsChecked = !settings1CheckBox.IsChecked;
+                return;
+            }
+            Settings newSettings = new Settings(bot.Settings);
+            newSettings.isRegistrationNewUsers = !newSettings.isRegistrationNewUsers;
+            bot.Settings = newSettings;
         }
     }
 }

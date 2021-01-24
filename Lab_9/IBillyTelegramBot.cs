@@ -14,6 +14,12 @@ namespace Lab_9
             isSendData = aisSendData;
             isRegistrationNewUsers = aisRegistrationNewUsers;
         }
+        public Settings(Settings asettings)
+        {
+            isLoadData = asettings.isLoadData;
+            isSendData = asettings.isSendData;
+            isRegistrationNewUsers = asettings.isRegistrationNewUsers;
+        }
     }
 
     public struct User : IComparable
@@ -21,6 +27,11 @@ namespace Lab_9
         public string firstName, lastName;
         public bool mailing;
         public int userId;
+
+        public string FirstName { get { return firstName; } set { firstName = value; } }
+        public string LastName { get { return lastName; } set { lastName = value; } }
+        public bool Mailing { get { return mailing; } set { mailing = value; } }
+        public int UserId { get { return userId; } set { userId = value; } }
 
         public User(int auserId, string afirstName = "", string alastName = "", bool amailing = false)
         {
