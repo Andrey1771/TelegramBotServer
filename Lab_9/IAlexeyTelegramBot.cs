@@ -59,7 +59,7 @@ namespace Lab_9
         }
     }
 
-    public interface IBillyTelegramBot
+    public interface IAlexeyTelegramBot
     {
         bool Enable { get; }
         Settings Settings { get; set; }

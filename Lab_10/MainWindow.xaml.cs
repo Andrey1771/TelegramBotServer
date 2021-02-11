@@ -23,14 +23,14 @@ namespace Lab_10
     /// </summary>
     public partial class MainWindow : Window
     {
-        BillyTelegramBot bot;
+        AlexeyTelegramBot bot;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void UpdateDataGridBot(IBillyTelegramBot bot)
+        private void UpdateDataGridBot(IAlexeyTelegramBot bot)
         {
             usersDataGrid.ItemsSource = bot.Users;
         }
@@ -101,7 +101,7 @@ namespace Lab_10
         {
             if(CheckPathesBot())
             {
-                bot = new BillyTelegramBot(pathSaveLoadTextBox.Text, pathTokenTelegramTextBox.Text, pathSaverSystemTextBox.Text);
+                bot = new AlexeyTelegramBot(pathSaveLoadTextBox.Text, pathTokenTelegramTextBox.Text, pathSaverSystemTextBox.Text);
                 UpdateDataGridBot(bot);
                 return true;
             }
